@@ -1,0 +1,78 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>156baa21-946e-4117-a69c-4a97d9995a2c</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>main.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>PDFDownloader</Name>
+    <RootNamespace>PDFDownloader</RootNamespace>
+    <InterpreterId>MSBuild|venv|$(MSBuildProjectFullPath)</InterpreterId>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Interpreter Include="venv\">
+      <Id>venv</Id>
+      <Version>3.13</Version>
+      <Description>venv (Python 3.13 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="data\" />
+    <Folder Include="data\PDFs\" />
+    <Folder Include="logs\" />
+    <Folder Include="ui\" />
+    <Folder Include="utils\" />
+    <Folder Include="tests\" />
+    <Folder Include="pdf_downloader\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="main.py" />
+    <Compile Include="ui\app.py" />
+    <Compile Include="ui\__init__.py" />
+    <Compile Include="utils\logging_setup.py" />
+    <Compile Include="logs\__init__.py" />
+    <Compile Include="pdf_downloader\downloader.py" />
+    <Compile Include="pdf_downloader\__init__.py" />
+    <Compile Include="tests\test_downloader.py" />
+    <Compile Include="tests\__init__.py" />
+    <Compile Include="utils\xlsx_chunk_reader.py" />
+    <Compile Include="utils\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="data\GRI_2017_2020 %281%29.xlsx" />
+    <Content Include="data\Metadata2006_2016.xlsx" />
+    <Content Include="data\DownloadedStatus.xlsx" />
+    <Content Include="logs\info.log" />
+    <Content Include="logs\warn.log" />
+    <Content Include="logs\fatal.log" />
+    <Content Include="logs\all.log" />
+    <Content Include="logs\debug.log" />
+    <Content Include="logs\trace.log" />
+    <Content Include="requirements.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>

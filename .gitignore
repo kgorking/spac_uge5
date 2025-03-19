@@ -361,3 +361,19 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+
+# Ignore all log files in the logs/ directory
+logs/*.log
+logs/
+
+# Ignore all PDFs inside data/PDFs/
+data/PDFs/*.pdf
+
+# Ignore specific Excel files in data/
+data/DownloadedStatus.xlsx
+data/GRI_2017_2020 (1).xlsx
+data/Metadata2006_2016.xlsx
+/PDFDownloader/data/DownloadedStatus.xlsx
+/PDFDownloader/data/GRI_2017_2020 (1).xlsx
+/PDFDownloader/data/Metadata2006_2016.xlsx
