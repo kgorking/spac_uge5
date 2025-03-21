@@ -35,8 +35,6 @@ The **PDFDownloader** project provides a convenient way to download PDFs from on
 - **Python 3.8+** (recommended)
 - **pip** for installing packages
 
-See [`requirements.txt`](#requirements-file) below for the exact Python dependencies.
-
 ---
 
 ## Setup & Installation
