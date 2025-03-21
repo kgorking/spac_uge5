@@ -19,7 +19,7 @@ def run_downloader_in_thread(dev_mode_toggle, update_queue):
             output_folder="data/PDFs",
             status_file="data/DownloadedStatus.xlsx",
             dev_mode=dev_mode_toggle,
-            max_concurrent_workers=10,
+            max_concurrent_workers=3,
             update_queue=update_queue,
             max_success=10
         )
@@ -45,7 +45,7 @@ def main():
     # 3. Create the Tkinter app for downloads
     app = DownloadApp(
         update_queue=update_queue,
-        max_workers=10,
+        max_workers=3,
         max_success=10,
         dev_mode=dev_mode_toggle
     )
