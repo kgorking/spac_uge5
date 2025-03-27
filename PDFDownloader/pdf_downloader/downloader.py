@@ -330,6 +330,7 @@ def attempt_download(file_path, url, brnum, update_queue=None, thread_id="???"):
 
     # Check file size
     if file_path.stat().st_size == 0:
+        file_path.unlink(missing_ok=True)
         return ("Failure", "Downloaded file is zero bytes.")
 
     # Validate PDF structure with PyPDF2
