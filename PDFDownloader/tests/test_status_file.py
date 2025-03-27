@@ -3,7 +3,6 @@ from pdf_downloader.downloader import load_or_create_status_file, update_status,
 
 def test_status_file():
     test_file_name = "test_save_file.xlsx"
-    df = None
 
     if os.path.exists(test_file_name):
         os.unlink(test_file_name)
@@ -20,6 +19,6 @@ def test_status_file():
     assert(os.path.exists(test_file_name))
 
     df = load_or_create_status_file(test_file_name)
-    assert df.size > 0
+    assert df.size == 3
     os.unlink(test_file_name)
 
