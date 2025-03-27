@@ -18,6 +18,7 @@ from utils.xlsx_chunk_reader import read_xlsx_in_chunks
 PRIMARY_LINK_COL = "Pdf_URL"
 SECONDARY_LINK_COL = "Report Html Address"
 BRNUM_COL = "BRnum"
+HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
 
 # ---------------------
 # Public Entry Function
@@ -266,7 +267,7 @@ def attempt_download(file_path, url, brnum, update_queue=None, thread_id="???"):
     head_ok = False
     head_resp = None
     try:
-        head_resp = requests.head(url, timeout=30, allow_redirects=True)
+        head_resp = requests.head(url, timeout=30, allow_redirects=True, headers=HEADERS)
         head_resp.raise_for_status()
         head_ok = True
     except requests.exceptions.RequestException as e:
@@ -288,7 +289,7 @@ def attempt_download(file_path, url, brnum, update_queue=None, thread_id="???"):
 
     # GET request (streamed)
     try:
-        resp = requests.get(url, timeout=60, stream=True)
+        resp = requests.get(url, timeout=60, stream=True, headers=HEADERS)
         resp.raise_for_status()
     except requests.exceptions.RequestException as e:
         return ("Failure", f"GET request error: {e}")
