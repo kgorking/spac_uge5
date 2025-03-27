@@ -269,7 +269,7 @@ def attempt_download(file_path, url, brnum, update_queue=None, thread_id="???"):
     head_ok = False
     head_resp = None
     try:
-        head_resp = requests.head(url, timeout=30, allow_redirects=True, headers=HEADERS)
+        head_resp = requests.head(url, timeout=30, allow_redirects=True, verify=False, headers=HEADERS)
         head_resp.raise_for_status()
         head_ok = True
     except requests.exceptions.RequestException as e:
@@ -291,7 +291,7 @@ def attempt_download(file_path, url, brnum, update_queue=None, thread_id="???"):
 
     # GET request (streamed)
     try:
-        resp = requests.get(url, timeout=60, stream=True, headers=HEADERS)
+        resp = requests.get(url, timeout=60, stream=True, verify=False, headers=HEADERS)
         resp.raise_for_status()
     except requests.exceptions.RequestException as e:
         return ("Failure", f"GET request error: {e}")
