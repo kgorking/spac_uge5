@@ -2,6 +2,7 @@
 
 import logging
 import os
+from plistlib import InvalidFileException
 import pandas as pd
 import requests
 import shutil
@@ -306,8 +307,7 @@ def attempt_download(file_path, url, brnum, update_queue=None, thread_id="???"):
                     wrote_first_chunk = True
                     if b"%PDF-" not in chunk[:20]:
                         logger.warning(f"[BR{brnum}] First chunk missing %PDF- signature.")
-                        file_path.unlink(missing_ok=True)
-                        return ("Failure", "No %PDF- signature in the initial data.")
+                        raise InvalidFileException("No %PDF- signature in the initial data.")
                 f.write(chunk)
                 downloaded += len(chunk)
 
@@ -323,6 +323,10 @@ def attempt_download(file_path, url, brnum, update_queue=None, thread_id="???"):
 
     except OSError as e:
         return ("Failure", f"File write error: {e}")
+    except InvalidFileException as e:
+        file_path.unlink(missing_ok=True)
+        return ("Failure", str(e))
+
 
     # Check file size
     if file_path.stat().st_size == 0:
