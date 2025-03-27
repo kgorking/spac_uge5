@@ -69,6 +69,16 @@ class TestDownloader:
         assert not os.path.exists(test_filename)
         cleanup()
 
+
+    def test_zerosize_download(self):
+        """
+        Ensure that pdf with no content is deleted after download.
+        """
+        status, err = mock_download("get_zerosize")
+        assert status == "Failure"
+        assert not os.path.exists(test_filename)
+        cleanup()
+
     def test_needs_user_agent(self):
         """
         Ensure that a valid user agent is set in the requests.

@@ -1,5 +1,6 @@
 import multiprocessing
 import threading
+import os
 from time import sleep
 from flask import (
     Flask,
@@ -9,9 +10,14 @@ from flask import (
     redirect,
 )
 
-app_http = Flask(__name__)
-app_https = Flask(__name__)
+app_http = Flask("mock HTTP")
+app_https = Flask("mock HTTPS")
 
+script_directory = os.path.dirname(os.path.abspath(__file__))
+pdf_valid_empty = script_directory + '/empty.pdf'
+pdf_zerosize = script_directory + '/zerosize.pdf'
+pdf_corrupt = script_directory + '/corrupt.pdf'
+pdf_aes_enc = script_directory + '/aes_enc.pdf'
 
 @app_http.route("/api/is_live")
 def is_live():
@@ -26,17 +32,23 @@ def kill():
 
 @app_http.route("/api/get_empty")
 def get_empty_pdf():
-    return send_file("empty.pdf", mimetype="application/pdf")
+    return send_file(pdf_valid_empty, mimetype="application/pdf")
+
+
+
+@app_http.route("/api/get_zerosize")
+def get_zerosize_pdf():
+    return send_file(pdf_zerosize, mimetype="application/pdf")
 
 
 @app_http.route("/api/get_corrupted")
 def get_corrupted_pdf():
-    return send_file("corrupt.pdf", mimetype="application/pdf")
+    return send_file(pdf_corrupt, mimetype="application/pdf")
 
 
 @app_http.route("/api/get_aes_encrypted")
 def get_aes_encrypted_pdf():
-    return send_file("aes_enc.pdf", mimetype="application/pdf")
+    return send_file(pdf_aes_enc, mimetype="application/pdf")
 
 
 # Simulate a server that requires a browser user-agent
@@ -70,7 +82,7 @@ def is_live():
 
 @app_https.route("/api/ssl_get_empty")
 def get_empty_pdf():
-    return send_file("empty.pdf", mimetype="application/pdf")
+    return send_file(pdf_valid_empty, mimetype="application/pdf")
 
 
 def start_https_server():
