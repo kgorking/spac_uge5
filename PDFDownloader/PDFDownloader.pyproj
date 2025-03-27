@@ -11,7 +11,8 @@
     <OutputPath>.</OutputPath>
     <Name>PDFDownloader</Name>
     <RootNamespace>PDFDownloader</RootNamespace>
-    <InterpreterId>MSBuild|venv|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <TestFramework>Pytest</TestFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,17 +22,6 @@
     <DebugSymbols>true</DebugSymbols>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
-  <ItemGroup>
-    <Interpreter Include="venv\">
-      <Id>venv</Id>
-      <Version>3.13</Version>
-      <Description>venv (Python 3.13 (64-bit))</Description>
-      <InterpreterPath>Scripts\python.exe</InterpreterPath>
-      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
-      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
-      <Architecture>X64</Architecture>
-    </Interpreter>
-  </ItemGroup>
   <ItemGroup>
     <Folder Include="data\" />
     <Folder Include="data\PDFs\" />
@@ -43,6 +33,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="main.py" />
+    <Compile Include="tests\mock_server.py" />
+    <Compile Include="tests\test_excel_reader.py" />
+    <Compile Include="tests\test_status_file.py" />
     <Compile Include="ui\app.py" />
     <Compile Include="ui\__init__.py" />
     <Compile Include="utils\logging_setup.py" />
@@ -57,7 +50,6 @@
   <ItemGroup>
     <Content Include="data\GRI_2017_2020 %281%29.xlsx" />
     <Content Include="data\Metadata2006_2016.xlsx" />
-    <Content Include="data\DownloadedStatus.xlsx" />
     <Content Include="logs\info.log" />
     <Content Include="logs\warn.log" />
     <Content Include="logs\fatal.log" />
@@ -65,6 +57,18 @@
     <Content Include="logs\debug.log" />
     <Content Include="logs\trace.log" />
     <Content Include="requirements.txt" />
+    <Content Include="tests\todo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="env\">
+      <Id>env</Id>
+      <Version>3.13</Version>
+      <Description>env (Python 3.13 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
