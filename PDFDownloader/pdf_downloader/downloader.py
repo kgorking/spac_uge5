@@ -168,7 +168,10 @@ def download_single_pdf(
 
     # 1) Attempt primary URL
     primary_status, primary_info = None, None
-    if primary_url and primary_url.lower().startswith(("http://", "https://")):
+    if primary_url:
+        if not primary_url.lower().startswith(("http://", "https://")):
+            primary_url = 'http://' + primary_url
+
         _push_thread_update(update_queue, worker_id, f"Attempting {brnum} (primary)", 0)
         pstat, pinfo = attempt_download(
             file_path=Path(output_folder) / f"{brnum}.pdf",
@@ -191,7 +194,9 @@ def download_single_pdf(
 
     # 2) Attempt secondary URL
     secondary_status, secondary_info = None, None
-    if secondary_url and secondary_url.lower().startswith(("http://", "https://")):
+    if secondary_url:
+        if not secondary_url.lower().startswith(("http://", "https://")):
+            secondary_url = 'http://' + secondary_url
         _push_thread_update(update_queue, worker_id, f"Attempting {brnum} (secondary)", 0)
         sstat, sinfo = attempt_download(
             file_path=Path(output_folder) / f"{brnum}.pdf",
@@ -248,9 +253,6 @@ def attempt_download(file_path, url, brnum, update_queue=None, thread_id="???"):
 
     import re
     url = re.sub(r"[\u200B-\u200F\uFEFF]", "", url.strip())  # remove zero-width chars
-
-    if not url.lower().startswith(("http://", "https://")):
-        return ("Failure", "URL is missing http/https protocol or malformed.")
 
     # Check disk space
     try:
