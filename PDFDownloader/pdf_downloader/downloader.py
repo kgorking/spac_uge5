@@ -2,7 +2,6 @@
 
 import logging
 import os
-from plistlib import InvalidFileException
 import pandas as pd
 import requests
 import shutil
@@ -18,7 +17,6 @@ from utils.xlsx_chunk_reader import read_xlsx_in_chunks
 PRIMARY_LINK_COL = "Pdf_URL"
 SECONDARY_LINK_COL = "Report Html Address"
 BRNUM_COL = "BRnum"
-HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
 
 # ---------------------
 # Public Entry Function
@@ -168,10 +166,7 @@ def download_single_pdf(
 
     # 1) Attempt primary URL
     primary_status, primary_info = None, None
-    if primary_url:
-        if not primary_url.lower().startswith(("http://", "https://")):
-            primary_url = 'http://' + primary_url
-
+    if primary_url and primary_url.lower().startswith(("http://", "https://")):
         _push_thread_update(update_queue, worker_id, f"Attempting {brnum} (primary)", 0)
         pstat, pinfo = attempt_download(
             file_path=Path(output_folder) / f"{brnum}.pdf",
@@ -194,9 +189,7 @@ def download_single_pdf(
 
     # 2) Attempt secondary URL
     secondary_status, secondary_info = None, None
-    if secondary_url:
-        if not secondary_url.lower().startswith(("http://", "https://")):
-            secondary_url = 'http://' + secondary_url
+    if secondary_url and secondary_url.lower().startswith(("http://", "https://")):
         _push_thread_update(update_queue, worker_id, f"Attempting {brnum} (secondary)", 0)
         sstat, sinfo = attempt_download(
             file_path=Path(output_folder) / f"{brnum}.pdf",
@@ -254,6 +247,9 @@ def attempt_download(file_path, url, brnum, update_queue=None, thread_id="???"):
     import re
     url = re.sub(r"[\u200B-\u200F\uFEFF]", "", url.strip())  # remove zero-width chars
 
+    if not url.lower().startswith(("http://", "https://")):
+        return ("Failure", "URL is missing http/https protocol or malformed.")
+
     # Check disk space
     try:
         disk_usage = shutil.disk_usage(file_path.parent)
@@ -269,7 +265,7 @@ def attempt_download(file_path, url, brnum, update_queue=None, thread_id="???"):
     head_ok = False
     head_resp = None
     try:
-        head_resp = requests.head(url, timeout=30, allow_redirects=True, verify=False, headers=HEADERS)
+        head_resp = requests.head(url, timeout=30, allow_redirects=True)
         head_resp.raise_for_status()
         head_ok = True
     except requests.exceptions.RequestException as e:
@@ -291,7 +287,7 @@ def attempt_download(file_path, url, brnum, update_queue=None, thread_id="???"):
 
     # GET request (streamed)
     try:
-        resp = requests.get(url, timeout=60, stream=True, verify=False, headers=HEADERS)
+        resp = requests.get(url, timeout=60, stream=True)
         resp.raise_for_status()
     except requests.exceptions.RequestException as e:
         return ("Failure", f"GET request error: {e}")
@@ -310,7 +306,8 @@ def attempt_download(file_path, url, brnum, update_queue=None, thread_id="???"):
                     wrote_first_chunk = True
                     if b"%PDF-" not in chunk[:20]:
                         logger.warning(f"[BR{brnum}] First chunk missing %PDF- signature.")
-                        raise InvalidFileException("No %PDF- signature in the initial data.")
+                        file_path.unlink(missing_ok=True)
+                        return ("Failure", "No %PDF- signature in the initial data.")
                 f.write(chunk)
                 downloaded += len(chunk)
 
@@ -326,14 +323,9 @@ def attempt_download(file_path, url, brnum, update_queue=None, thread_id="???"):
 
     except OSError as e:
         return ("Failure", f"File write error: {e}")
-    except InvalidFileException as e:
-        file_path.unlink(missing_ok=True)
-        return ("Failure", str(e))
-
 
     # Check file size
     if file_path.stat().st_size == 0:
-        file_path.unlink(missing_ok=True)
         return ("Failure", "Downloaded file is zero bytes.")
 
     # Validate PDF structure with PyPDF2
