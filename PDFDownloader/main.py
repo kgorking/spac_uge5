@@ -15,8 +15,7 @@ def run_downloader_in_thread(dev_mode_toggle, update_queue):
     def downloader_thread():
         # Run the actual downloader logic
         run_downloader(
-            #xlsx_paths=["data/GRI_2017_2020 (1).xlsx", "data/Metadata2006_2016.xlsx"],
-            xlsx_paths=["data/Metadata2006_2016.xlsx"],
+            xlsx_paths=["data/GRI_2017_2020 (1).xlsx", "data/Metadata2006_2016.xlsx"],
             output_folder="data/PDFs",
             status_file="data/DownloadedStatus.xlsx",
             dev_mode=dev_mode_toggle,
