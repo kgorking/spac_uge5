@@ -118,7 +118,7 @@ class TestDownloader:
     def test_unsupported_encryption(self):
         """
         Downloads a valid pdf, but it uses AES encryption, which is
-        not supported by PyPDF and therefore fails to parse it.
+        not supported by PyPDF without an installed library.
         This results in an error state, and the valid pdf is deleted
         """
         status, err = mock_download("get_aes_encrypted")

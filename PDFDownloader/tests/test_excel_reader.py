@@ -18,4 +18,5 @@ def test_excel_reader():
     count = 0
     for chunk in chunk_generator:
         count += len(chunk["BRnum"])
+        print(count)
     assert count == 21057

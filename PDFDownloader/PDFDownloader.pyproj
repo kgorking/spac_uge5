@@ -63,6 +63,7 @@
     <Content Include="tests\corrupt.pdf" />
     <Content Include="tests\empty.pdf" />
     <Content Include="tests\rapport.md" />
+    <Content Include="tests\readme.md" />
     <Content Include="tests\zerosize.pdf" />
   </ItemGroup>
   <ItemGroup>
