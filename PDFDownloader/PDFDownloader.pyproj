@@ -12,7 +12,9 @@
     <Name>PDFDownloader</Name>
     <RootNamespace>PDFDownloader</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
-    <TestFramework>Pytest</TestFramework>
+    <TestFramework>pytest</TestFramework>
+    <UnitTestPattern>test*.py</UnitTestPattern>
+    <UnitTestRootDirectory>.</UnitTestRootDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,7 +59,11 @@
     <Content Include="logs\debug.log" />
     <Content Include="logs\trace.log" />
     <Content Include="requirements.txt" />
-    <Content Include="tests\todo.txt" />
+    <Content Include="tests\aes_enc.pdf" />
+    <Content Include="tests\corrupt.pdf" />
+    <Content Include="tests\empty.pdf" />
+    <Content Include="tests\rapport.md" />
+    <Content Include="tests\zerosize.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

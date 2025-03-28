@@ -125,7 +125,7 @@ class TestDownloader:
         assert status == "Success"
         cleanup()
 
-    def test_url_no_schema(self):
+    def test_url_no_scheme(self):
         """
         Ensure that an url without a prefixed 'http://' works
         """
