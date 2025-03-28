@@ -11,9 +11,9 @@ test_filename = test_brnum + '.pdf'
 # Returns the full url to the mock server for an endpoint
 def mock_url(endpoint: str, ssl: bool = False) -> str:
     if ssl:
-        return "https://localhost:12334/api/" + endpoint
+        return "https://127.0.0.1:12334/api/" + endpoint
     else:
-        return "http://localhost:12333/api/" + endpoint
+        return "http://127.0.0.1:12333/api/" + endpoint
 
 
 # Downloads an url
